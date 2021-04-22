@@ -7,7 +7,7 @@ import java.util.Stack;
 
 public class Bisection {
 
-    private EvaluateExpression evaluator = new EvaluateExpression();
+    private final EvaluateExpression evaluator = new EvaluateExpression();
 
     public boolean isValidInterval(double a, double b, String f) {
         return (evaluator.evaluateExpression(f, a) <= 0 && evaluator.evaluateExpression(f, b) >= 0)
