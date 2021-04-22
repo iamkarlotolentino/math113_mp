@@ -1,6 +1,8 @@
 package team.bitwin.ui;
 
 import team.bitwin.algo.bisection.Bisection;
+import team.bitwin.algo.newton.Newton;
+import team.bitwin.algo.secant.Secant;
 
 import javax.swing.*;
 
@@ -63,7 +65,10 @@ public class MainWindow {
 
                     if (bisection.isValidInterval(aD, bD, tfFunctionInput.getText())) {
                         var result = bisection.approximateRoot(aD, bD, eD, tfFunctionInput.getText(), new Stack<>());
-                        new ResultDialog(result).setVisible(true);
+                        String conclusion = String.format("<html>Conclusion: " +
+                                        "We accept <b>%s</b> as the root between the interval <b>%f</b> and <b>%f</b> with an error tolerance of <b>%f</b></html>",
+                                result.peek()[result.peek().length - 1], aD, bD, eD);
+                        new ResultDialog(ResultDialog.BISECTION_TYPE, result, conclusion).setVisible(true);
                     } else {
                         alertWarning("Please try again", "Interval has no roots");
                     }
@@ -80,6 +85,17 @@ public class MainWindow {
                     }
 
                     System.out.println("Working on newton method");
+
+                    double aD = Double.parseDouble(tfNewtonA.getText());
+                    double eD = Double.parseDouble(tfNewtonE.getText());
+
+                    final Newton newton = new Newton();
+
+                    var result = newton.approximateRoot(eD, aD, tfFunctionInput.getText(), new Stack<>());
+                    String conclusion = String.format("<html>Conclusion: " +
+                                    "We accept <b>%s</b> as the root using the initial aproximation <b>%f</b> with error tolerance of <b>%f</b></html>",
+                            result.peek()[result.peek().length - 1], aD, eD);
+                    new ResultDialog(ResultDialog.NEWTON_TYPE, result, conclusion).setVisible(true);
                 } else if (tbMethods.getSelectedIndex() == 2) { // Selected secant method
                     if (hasBlank(tfSecantX0, tfSecantX1, tfSecantE)) {
                         alertWarning("Missing required input", "Input your values of secant method first");
@@ -92,6 +108,18 @@ public class MainWindow {
                     }
 
                     System.out.println("Working on secant method");
+
+                    double x0D = Double.parseDouble(tfSecantX0.getText());
+                    double x1D = Double.parseDouble(tfSecantX1.getText());
+                    double eD = Double.parseDouble(tfSecantE.getText());
+
+                    final Secant secant = new Secant();
+
+                    var result = secant.approximateRoot(x0D, x1D, eD, tfFunctionInput.getText(), new Stack<>());
+                    String conclusion = String.format("<html>Conclusion: " +
+                                    "We accept <b>%s</b> as the root using the initial approximations of <b>[%f, %f]</b> with error tolerance of <b>%f</b></html>",
+                            result.firstElement()[0], x0D, x1D, eD);
+                    new ResultDialog(ResultDialog.SECANT_TYPE, result, conclusion).setVisible(true);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
