@@ -9,17 +9,19 @@ public class Newton {
     private final EvaluateExpression evaluator = new EvaluateExpression();
 
     public Stack<String[]> approximateRoot(double x, double errorTolerance, String f, Stack<String[]> prev) throws Exception {
+        DecimalFormat df = new DecimalFormat("0.0000000000");
+        f = f.replaceAll("E", df.format(Math.E));
+        f = f.replaceAll("PI", df.format(Math.PI));
+
         double fOfX;
         double fpOfX = 0;
         String errorEst = " ";
-        DecimalFormat format = new DecimalFormat("0.0000000000");
         fOfX = evaluator.evaluateExpression(f, x);
 
-        if(prev.size() != 0){
+        if (prev.size() != 0) {
             errorEst = String.valueOf(x - Double.parseDouble(prev.lastElement()[0]));
 
-            if(!(Math.abs(x - Double.parseDouble(prev.lastElement()[0])) <= errorTolerance)){
-
+            if (!(Math.abs(x - Double.parseDouble(prev.lastElement()[0])) <= errorTolerance)) {
                 String[] iterationResult = {
                         String.valueOf(x),
                         String.valueOf(fOfX),
@@ -38,18 +40,17 @@ public class Newton {
                         break;
                 }
 
-                double nextX = x - (fOfX/fpOfX);
+                double nextX = x - (fOfX / fpOfX);
 
-                return approximateRoot(nextX,errorTolerance,f,prev);
+                return approximateRoot(nextX, errorTolerance, f, prev);
             }
-        }else{
+        } else {
             String[] iterationResult = {
                     String.valueOf(x),
                     String.valueOf(fOfX),
                     errorEst
             };
             prev.push(iterationResult);
-
 
             switch (findType(f)) {
                 case ("Monomial"):
@@ -62,9 +63,9 @@ public class Newton {
                     break;
             }
 
-            double nextX = x - (fOfX/fpOfX);
+            double nextX = x - (fOfX / fpOfX);
 
-            return approximateRoot(nextX,errorTolerance,f,prev);
+            return approximateRoot(nextX, errorTolerance, f, prev);
 
         }
 
@@ -88,7 +89,7 @@ public class Newton {
         // Removes every space in the String input and removes all capitals.
 
         input = input.trim().toLowerCase();
-        for (int index = 0; index < input.length(); index ++) {
+        for (int index = 0; index < input.length(); index++) {
             if (input.charAt(index) == ' ') {
                 input = input.substring(0, index) + input.substring(index + 1);
             }
@@ -96,7 +97,7 @@ public class Newton {
 
         // Determines if the function is a Polynomial or a Monomial by finding the position of '+' or '-'.
 
-        if (input.indexOf('+') != -1 || ((input.indexOf('-') != -1 && input.indexOf('x') != -1 ) && input.indexOf('-') > input.indexOf('x'))) {
+        if (input.indexOf('+') != -1 || ((input.indexOf('-') != -1 && input.indexOf('x') != -1) && input.indexOf('-') > input.indexOf('x'))) {
             type = "Polynomial";
         } else {
             type = "Monomial";

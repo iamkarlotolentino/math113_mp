@@ -24,6 +24,7 @@ public class Parser {
         String previousToken = "";
         while (matcher.find()) {
             String token = matcher.group();
+            System.out.println(token);
 
             // On special case where a number is followed by a variable
             // Then, we place a multiplication in between
@@ -40,6 +41,7 @@ public class Parser {
 
             // On special case where a variable has an equivalent value
             // Then it is replaced, otherwise the token itself is pushed
+            System.out.println("Token: " + token);
             tokens.add(substitution.getOrDefault(token, token));
             previousToken = token;
         }

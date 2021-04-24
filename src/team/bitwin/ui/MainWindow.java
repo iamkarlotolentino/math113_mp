@@ -91,7 +91,7 @@ public class MainWindow {
 
                     final Newton newton = new Newton();
 
-                    var result = newton.approximateRoot(eD, aD, tfFunctionInput.getText(), new Stack<>());
+                    var result = newton.approximateRoot(aD, eD, tfFunctionInput.getText(), new Stack<>());
                     String conclusion = String.format("<html>Conclusion: " +
                                     "We accept <b>%s</b> as the root using the initial aproximation <b>%f</b> with error tolerance of <b>%f</b></html>",
                             result.peek()[result.peek().length - 1], aD, eD);

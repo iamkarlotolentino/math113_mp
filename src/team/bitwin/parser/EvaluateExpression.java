@@ -2,6 +2,7 @@ package team.bitwin.parser;
 
 import team.bitwin.model.TokenQueue;
 
+import java.text.DecimalFormat;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,17 +11,18 @@ import java.util.Stack;
 import static team.bitwin.parser.ValidatorUtils.isNumber;
 
 public class EvaluateExpression {
-
     private static final Map<String, String> constantValues = new HashMap<>();
     private final Parser parser = new Parser();
 
     public EvaluateExpression() {
-        constantValues.put("E", String.valueOf(Math.E));
-        constantValues.put("PI", String.valueOf(Math.PI));
+        DecimalFormat df = new DecimalFormat("0.0000000000");
+        constantValues.put("E", df.format(Math.E));
+        constantValues.put("PI", df.format(Math.PI));
     }
 
     public double evaluateExpression(String input, double x) {
         constantValues.put("x", String.valueOf(x));
+        constantValues.put("-x", x < 0 ? String.valueOf(x) : "-" + x);
         TokenQueue tokens = parser.parseString(input, constantValues);
         tokens = parser.infixToPostfix(tokens);
         return evaluatePostfix(tokens);
@@ -114,7 +116,8 @@ public class EvaluateExpression {
                             break;
                         default:
                             // Operator token is unidentifiable
-                            throw new IllegalArgumentException("Invalid f(x). Unknown operation is found");
+                            System.err.println("Unknown operator: " + token);
+                            throw new IllegalArgumentException("Invalid f(x). Unknown operator is found");
                     }
                 } catch (EmptyStackException ese) {
                     // Mismatched number of operators
@@ -125,14 +128,9 @@ public class EvaluateExpression {
 
         // The list should contain one item as the result only
         if (finalValue.size() > 1) {
+            System.err.println("Expression stack: " + finalValue);
             throw new IllegalArgumentException("Invalid f(x). An incorrect operation is detected");
         }
-
-        // Last value of the list should be a number
-//        if (! isNumber(finalValue.peek())) {
-//            System.err.println("Last value of tokens is: " + finalValue.peek());
-//            throw new IllegalArgumentException("Invalid f(x). There is something wrong with the input");
-//        }
 
         return Double.parseDouble(finalValue.pop());
     }

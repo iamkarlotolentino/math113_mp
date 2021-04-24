@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="math113_mp:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/math113_mp_jar</output-path>
+    <root id="archive" name="math113_mp.jar">
+      <element id="module-output" name="math113_mp" />
+    </root>
+  </artifact>
+</component>
