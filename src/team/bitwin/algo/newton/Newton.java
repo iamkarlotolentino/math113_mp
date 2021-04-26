@@ -20,28 +20,25 @@ public class Newton {
 
         if (prev.size() != 0) {
             errorEst = String.valueOf(x - Double.parseDouble(prev.lastElement()[0]));
+            String[] iterationResult = {
+                    String.valueOf(x),
+                    String.valueOf(fOfX),
+                    errorEst
+            };
+            prev.push(iterationResult);
 
-            if (!(Math.abs(x - Double.parseDouble(prev.lastElement()[0])) <= errorTolerance)) {
-                String[] iterationResult = {
-                        String.valueOf(x),
-                        String.valueOf(fOfX),
-                        errorEst
-                };
-                prev.push(iterationResult);
-
-                switch (findType(f)) {
-                    case ("Monomial"):
-                        Monomial obj1 = new Monomial();
-                        fpOfX = obj1.computeDerivative(f, x);
-                        break;
-                    case ("Polynomial"):
-                        Polynomial obj2 = new Polynomial();
-                        fpOfX = obj2.computeDerivative(f, x);
-                        break;
-                }
-
+            switch (findType(f)) {
+                case ("Monomial"):
+                    Monomial obj1 = new Monomial();
+                    fpOfX = obj1.computeDerivative(f, x);
+                    break;
+                case ("Polynomial"):
+                    Polynomial obj2 = new Polynomial();
+                    fpOfX = obj2.computeDerivative(f, x);
+                    break;
+            }
+            if (!(Math.abs(x - Double.parseDouble(prev.get(prev.indexOf(prev.lastElement()) - 1)[0])) <= errorTolerance)) {
                 double nextX = x - (fOfX / fpOfX);
-
                 return approximateRoot(nextX, errorTolerance, f, prev);
             }
         } else {

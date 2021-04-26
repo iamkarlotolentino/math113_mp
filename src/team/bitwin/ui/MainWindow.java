@@ -67,7 +67,7 @@ public class MainWindow {
                         var result = bisection.approximateRoot(aD, bD, eD, tfFunctionInput.getText(), new Stack<>());
                         String conclusion = String.format("<html>Conclusion: " +
                                         "We accept <b>%s</b> as the root between the interval <b>%f</b> and <b>%f</b> with an error tolerance of <b>%f</b></html>",
-                                result.peek()[result.peek().length - 1], aD, bD, eD);
+                                result.peek()[0], aD, bD, eD);
                         new ResultDialog(ResultDialog.BISECTION_TYPE, result, conclusion).setVisible(true);
                     } else {
                         alertWarning("Please try again", "Interval has no roots");
@@ -94,7 +94,7 @@ public class MainWindow {
                     var result = newton.approximateRoot(aD, eD, tfFunctionInput.getText(), new Stack<>());
                     String conclusion = String.format("<html>Conclusion: " +
                                     "We accept <b>%s</b> as the root using the initial aproximation <b>%f</b> with error tolerance of <b>%f</b></html>",
-                            result.peek()[result.peek().length - 1], aD, eD);
+                            result.peek()[0], aD, eD);
                     new ResultDialog(ResultDialog.NEWTON_TYPE, result, conclusion).setVisible(true);
                 } else if (tbMethods.getSelectedIndex() == 2) { // Selected secant method
                     if (hasBlank(tfSecantX0, tfSecantX1, tfSecantE)) {
