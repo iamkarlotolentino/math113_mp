@@ -113,7 +113,7 @@ public class Monomial extends Function {
                 str = str.substring(0, index) + str.substring(index + 1);
             }
         }
-
+        System.out.println(str);
         switch (whichConstructor) {
             case ("c"):
                 constant = Double.parseDouble(str);

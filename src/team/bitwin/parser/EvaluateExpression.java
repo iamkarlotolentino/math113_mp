@@ -13,17 +13,19 @@ import static team.bitwin.parser.ValidatorUtils.isNumber;
 public class EvaluateExpression {
     private static final Map<String, String> constantValues = new HashMap<>();
     private final Parser parser = new Parser();
+    DecimalFormat df = new DecimalFormat("0.0000000000");
 
     public EvaluateExpression() {
-        DecimalFormat df = new DecimalFormat("0.0000000000");
         constantValues.put("E", df.format(Math.E));
         constantValues.put("PI", df.format(Math.PI));
     }
 
     public double evaluateExpression(String input, double x) {
-        constantValues.put("x", String.valueOf(x));
-        constantValues.put("-x", x < 0 ? String.valueOf(x) : "-" + x);
+        constantValues.put("x", String.valueOf(df.format(x)));
+        constantValues.put("-x", x < 0 ? df.format(x*-1) : "-" + df.format(x));
         TokenQueue tokens = parser.parseString(input, constantValues);
+        System.out.print(input + " : " + x);
+        System.out.println("::--" +tokens);
         tokens = parser.infixToPostfix(tokens);
         return evaluatePostfix(tokens);
     }

@@ -9,9 +9,7 @@ public class Newton {
     private final EvaluateExpression evaluator = new EvaluateExpression();
 
     public Stack<String[]> approximateRoot(double x, double errorTolerance, String f, Stack<String[]> prev) throws Exception {
-        DecimalFormat df = new DecimalFormat("0.0000000000");
-        f = f.replaceAll("E", df.format(Math.E));
-        f = f.replaceAll("PI", df.format(Math.PI));
+        DecimalFormat format = new DecimalFormat("0.0000000000");
 
         double fOfX;
         double fpOfX = 0;
@@ -26,7 +24,6 @@ public class Newton {
                     errorEst
             };
             prev.push(iterationResult);
-
             switch (findType(f)) {
                 case ("Monomial"):
                     Monomial obj1 = new Monomial();
@@ -42,6 +39,7 @@ public class Newton {
                 return approximateRoot(nextX, errorTolerance, f, prev);
             }
         } else {
+
             String[] iterationResult = {
                     String.valueOf(x),
                     String.valueOf(fOfX),
