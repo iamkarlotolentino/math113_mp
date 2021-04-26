@@ -21,6 +21,7 @@ public class ResultDialog extends JDialog {
         setTitle("Root approximation result");
         setSize(new Dimension(800, 400));
         setContentPane(contentPane);
+        setLocationRelativeTo(null);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
