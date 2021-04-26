@@ -118,7 +118,7 @@ public class MainWindow {
                     var result = secant.approximateRoot(x0D, x1D, eD, tfFunctionInput.getText(), new Stack<>());
                     String conclusion = String.format("<html>Conclusion: " +
                                     "We accept <b>%s</b> as the root using the initial approximations of <b>[%f, %f]</b> with error tolerance of <b>%f</b></html>",
-                            result.firstElement()[0], x0D, x1D, eD);
+                            result.peek()[0], x0D, x1D, eD);
                     new ResultDialog(ResultDialog.SECANT_TYPE, result, conclusion).setVisible(true);
                 }
             } catch (Exception e) {
