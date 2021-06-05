@@ -1,5 +1,6 @@
 package team.bitwin.algo.newton;
 
+import org.matheclipse.core.eval.ExprEvaluator;
 import team.bitwin.parser.EvaluateExpression;
 
 import java.text.DecimalFormat;
@@ -7,12 +8,14 @@ import java.util.Stack;
 
 public class Newton {
     private final EvaluateExpression evaluator = new EvaluateExpression();
+    ExprEvaluator util = new ExprEvaluator();
 
     public Stack<String[]> approximateRoot(double x, double errorTolerance, String f, Stack<String[]> prev) throws Exception {
         DecimalFormat format = new DecimalFormat("0.0000000000");
 
         double fOfX;
         double fpOfX = 0;
+        String derivF = util.eval("diff(" + f +",x)").toString();
         String errorEst = " ";
         fOfX = evaluator.evaluateExpression(f, x);
 
@@ -24,16 +27,7 @@ public class Newton {
                     errorEst
             };
             prev.push(iterationResult);
-            switch (findType(f)) {
-                case ("Monomial"):
-                    Monomial obj1 = new Monomial();
-                    fpOfX = obj1.computeDerivative(f, x);
-                    break;
-                case ("Polynomial"):
-                    Polynomial obj2 = new Polynomial();
-                    fpOfX = obj2.computeDerivative(f, x);
-                    break;
-            }
+            fpOfX = evaluator.evaluateExpression(derivF, x);
             if (!(Math.abs(x - Double.parseDouble(prev.get(prev.indexOf(prev.lastElement()) - 1)[0])) <= errorTolerance)) {
                 double nextX = x - (fOfX / fpOfX);
                 return approximateRoot(nextX, errorTolerance, f, prev);
@@ -47,16 +41,7 @@ public class Newton {
             };
             prev.push(iterationResult);
 
-            switch (findType(f)) {
-                case ("Monomial"):
-                    Monomial obj1 = new Monomial();
-                    fpOfX = obj1.computeDerivative(f, x);
-                    break;
-                case ("Polynomial"):
-                    Polynomial obj2 = new Polynomial();
-                    fpOfX = obj2.computeDerivative(f, x);
-                    break;
-            }
+            fpOfX = evaluator.evaluateExpression(derivF, x);
 
             double nextX = x - (fOfX / fpOfX);
 
